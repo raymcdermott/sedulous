@@ -2,4 +2,7 @@
 
 An experiment in durable programming in Clojure.
 
+## Rationale
+
+
 ## Design
