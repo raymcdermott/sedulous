@@ -1,8 +1,10 @@
-# Sedulously
+# Sedulous
 
-Sedulous:
-- involving or accomplished with careful perseverance
-- diligent in application or pursuit
+*sedulous* /sĕj′ə-ləs/
+_adjective_
+
+- Persevering and constant in effort or application; assiduous.
+- Diligent in application or pursuit; constant, steady, and persevering in business, or in endeavors to effect an object; steadily industrious; assiduous.
 
 An experiment in durable execution in Clojure.
 
