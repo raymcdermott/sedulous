@@ -95,40 +95,32 @@
 (defn begin-tracking [log tx-key]
   (swap! log assoc tx-key {}))
 
+(defn form-keys
+  [log tracking-key]
+  (keys (get log tracking-key)))
+
+(defn form-key
+  [log tracking-key]
+  (first (form-keys log tracking-key)))
+
+(defn key-path->result
+  [log tracking-key form-key]
+  (let [call-id (get-in log [tracking-key form-key :call-id])]
+    (get-in log [tracking-key form-key :call call-id :result])))
+
 ;; TODO duratom
 (def log-atom (atom {}))
+
 
 ;; TODO
 ;; Ensure that the log is processed when the ns is loaded
 ;; so that any outstanding txns are resumed / completed.
 
-(defmacro with-tx [fn-list & {:keys [_to-pass-on-map] :as options}]
+(defmacro sedulously
+  "Side effects as data. Executes one or more functions until completion."
+  [fn-list & {:keys [_to-pass-on-map] :as options}]
   `(let [form-meta# ~(meta &form)
          now# (System/nanoTime)
          tracking-key# (metadata->tx-key form-meta# now#)]
      (begin-tracking log-atom tracking-key#)
      (log-run-effects log-atom tracking-key# form-meta# ~fn-list ~options)))
-
-(comment
-
-  ;; base cases - 1 function
-  (with-tx #(prn :effect (rand-int 10)))
-
-  ;; base cases - n functions
-  (with-tx [#(prn :effect0 (rand-int 10))
-            #(prn :effect1 (rand-int 10))])
-
-  ;; function that throws but will (in all likelihood succeed)
-  (with-tx #(let [x (rand-int 10)]
-              (if (even? x)
-                (throw (ex-info "I can't even" {:x x}))
-                (prn :effect1 (str "I fuck with " x)))))
-
-  ;; mix of above
-  (with-tx [#(prn :effect0 (rand-int 10))
-            #(let [x (rand-int 10)]
-               (if (even? x)
-                 (throw (ex-info "I can't even" {:x x}))
-                 (prn :effect1 (str "I fuck with " x))))])
-
-  )
