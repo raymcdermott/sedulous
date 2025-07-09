@@ -1,8 +1,8 @@
-(ns durable.log-test
+(ns sedulous.log-test
   (:require
     [clojure.edn :as edn]
     [clojure.test :refer [deftest is testing use-fixtures]]
-    [durable.log :as sut])
+    [sedulous.log :as sut])
   (:import (com.sun.net.httpserver Headers HttpServer SimpleFileServer SimpleFileServer$OutputLevel)
            (java.io File)
            (java.net InetSocketAddress URI)

@@ -1,12 +1,9 @@
 # Sedulous
 
-*sedulous* /sĕj′ə-ləs/
-_adjective_
+- _Persevering and constant in effort or application; assiduous._
+- _Diligent in application or pursuit; constant, steady, and persevering in business, or in endeavors to effect an object; steadily industrious; assiduous._
 
-- Persevering and constant in effort or application; assiduous.
-- Diligent in application or pursuit; constant, steady, and persevering in business, or in endeavors to effect an object; steadily industrious; assiduous.
-
-An experiment in durable execution in Clojure.
+An experiment in sedulous execution in Clojure.
 
 ## Rationale
 There are frequently situations where one would like to reliably transact over two resources that have different transactional models.
@@ -15,30 +12,30 @@ They should both succeed or fail.
 
 A motivating example: transact that payment using a third-party API over the web and record payment for an order in your database.
 
-### Prior work
+### Background
 The general term is 2-Phase Commit (2PC) where there is a ceremony to coordinate commits over both resources.
 
-Such coordination was adhoc and proprietary.
+Early implementations to achieve coordination was adhoc and proprietary.
 
 Before the web, XA was an interoperability standard that for 2PC that was used between database and other enterprise transactional systems. 
 
 XA now is a virtually unused protocol. It had a complex spec which was non-trivial to demonstrate compliance and despite the promise of interoperability between vendors, it never really bore fruit.
 
 ### Modern work
-A more recent approach, as espoused by examples such as restate.io and temporal.io is to add durable execution into lines of code.
+A more recent approach, as espoused by examples such as restate.io and temporal.io is to add sedulous execution into lines of code.
 
-Again the approach is proprietary and consequently tricky to mix and match.
+All that is old is new again: these implementations are also adhoc and proprietary.
 
 The frameworks are large and have support for many languages.
 
 They offer support for long-running workflows and both sync and async execution.
 
 ### Clojure
-I wondered what it would look like - at a minimum - to provide reliable and durable Clojure code.
+I wondered what it would look like - at a minimum - to provide reliable and sedulous Clojure code.
 
 Specifically, I want to experiment with what it looks like we define and track effects in data.
 
-Like those other frameworks, I want to permit options in data such that we can stop the retries when we know the work will never succeed due to
+Like those other frameworks, I want to permit options such that we can stop the retries when we know the work will never succeed due to
 - exceptions that are impossible to recover from
 - servers that have told you your call will never work
 - other situations unknown to me but known to you
@@ -78,6 +75,7 @@ First attempt is with an atom and a macro.
 - [X] Track an effect that may throw using `http`
 - [X] Track several effects that may throw using `http`
 - [X] Track a mix of the above (`prn`, `spit`, `http`)
+- [ ] Prove that the execution will survive machine failure 
 - [ ] Have an optional number of retries
 - [ ] Have an optional exception that will stop retries
 - [ ] Have an optional function that will stop retries
