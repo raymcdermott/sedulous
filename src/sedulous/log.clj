@@ -81,6 +81,11 @@
                    :ns *ns*
                    :start now))
 
+(defn mark-completion
+  [log txn-key]
+  ;; TODO evaluate and mark the success of tx-key
+  )
+
 (defn log-run-effects
   [log txn-key form-meta effects]
   (let [effect-list (if (coll? effects) effects [effects])
@@ -92,9 +97,7 @@
     (doseq [form-key form-keys]
       (track-form-execution log txn-key form-key))
 
-    #_(evaluate-completion log txn-key)
-    ;; TODO evaluate and mark the success of tx-key
-    ))
+    (mark-completion log txn-key)))
 
 (defn reset-log! [log]
   (reset! log {}))
