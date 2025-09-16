@@ -25,11 +25,6 @@
 (defn free-port []
   (InetSocketAddress. 0))
 
-(defn header
-  "Simplify the interop"
-  [k v]
-  (Headers/of ^String/1 (into-array String [k v])))
-
 (defn stop-http-server
   [^HttpServer server]
   (.stop server 0))
@@ -277,3 +272,5 @@
           (condp = status-code
             200 (is (= content body))
             404 (is (= "<h1>File not found</h1>" (re-find #".*File not found.*" body)))))))))
+
+

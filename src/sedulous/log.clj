@@ -1,6 +1,10 @@
 (ns sedulous.log
   "Ensure that N side effecting functions are ran to completion."
+  (:require [duratom.core :refer [duratom]])
   (:import (clojure.lang ArityException)))
+
+(set! *warn-on-reflection* true)
+(set! *default-data-reader-fn* tagged-literal)
 
 (def clojure-exceptions
   #{ArityException
@@ -119,9 +123,10 @@
   (let [call-id (get-in log [tracking-key :forms form-key :call-id])]
     (get-in log [tracking-key :forms form-key :call call-id :result])))
 
-;; TODO duratom
-(defonce log-atom (atom {}))
-
+(defonce log-atom
+         (duratom :local-file
+                  :file-path "/Users/ray/oss/sedulous/.data/file.db"
+                  :init {}))
 
 ;; TODO fn to permit clean out of a completed tx-key
 
